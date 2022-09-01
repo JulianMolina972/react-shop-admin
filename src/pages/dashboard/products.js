@@ -1,38 +1,33 @@
-import endPoints from "@services/api";
-import useFetch from "@hooks/useFetch";
-import { Chart } from "@common/Chart";
+import { Fragment, useState } from 'react';
+import { PlusIcon } from '@heroicons/react/solid';
+import Modal from '@common/Modal';
+import FormProduct from '@components/FormProduct';
+// import FormProduct from '@components/FormProduct';
 
-
-const PRODUCT_LIMIT = 60;
-const PRODUCT_OFFSET = 5;
-
-export default function Dashboard() {
-  const products = useFetch(endPoints.products.getProducts(PRODUCT_LIMIT, PRODUCT_OFFSET));
-
-  const categoryNames = products?.map((product) => product.category);
-  const categoryCount = categoryNames?.map((category) => category.name)
-
-  const countOccurrences = (arr) => {
-    return arr.reduce((acc, curr) => {
-      acc[curr] = (acc[curr] || 0) + 1;
-      return acc;
-    }, {});
-  }
-
-  console.log(countOccurrences(categoryCount));
-
-  const data = {
-    datasets: [{
-      label: 'Categories',
-      data: countOccurrences(categoryCount),
-      borderWidth: 2,
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#50AF95', '#2A71D0'],
-    }]
-  }
+export default function products() {
+  const [open, setOpen] = useState(false);
+  const [products, setProducts] = useState([]);
 
   return (
     <>
-      <Chart className="mb-8 mt-2" chartData={data} />
+      <div className="lg:flex lg:items-center lg:justify-between mb-8">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">List of Products</h2>
+        </div>
+        <div className="mt-5 flex lg:mt-0 lg:ml-4">
+          <span className="sm:ml-3">
+            <button
+              type="button"
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={() => setOpen(true)}
+            >
+              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              Add Product
+            </button>
+          </span>
+        </div>
+      </div>
+
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -81,12 +76,12 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                        <a href="/edit" className="text-indigo-600 hover:text-indigo-900">
                           Edit
                         </a>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                        <a href="/edit" className="text-indigo-600 hover:text-indigo-900">
                           Delete
                         </a>
                       </td>
@@ -98,6 +93,9 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      <Modal open={open} setOpen={setOpen}>
+        <FormProduct />
+      </Modal>
     </>
   );
 }
