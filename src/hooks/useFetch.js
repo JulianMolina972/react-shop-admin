@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const useFetch = (endpoint) => {
   const [data, setData] = useState([]);
@@ -17,7 +16,6 @@ const useFetch = (endpoint) => {
       console.log(error);
     }
   }, []);
-
 
   return data;
 };

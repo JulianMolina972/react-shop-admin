@@ -1,9 +1,9 @@
-import { useRouter } from"next/router";
+import { useRouter } from 'next/router';
 
 export default function Nav() {
   const router = useRouter();
   const route = router.pathname.substring(1);
-  const withNav = ["login", "dashboard/edit"];
+  const withNav = ['login', 'dashboard/edit'];
 
   for (const iterator of withNav) {
     if (route.startsWith(iterator)) {

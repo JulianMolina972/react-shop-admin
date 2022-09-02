@@ -1,7 +1,7 @@
-import endPoints from "@services/api";
-import useFetch from "@hooks/useFetch";
-import { Chart } from "@common/Chart";
-
+import endPoints from '@services/api';
+import useFetch from '@hooks/useFetch';
+import { Chart } from '@common/Chart';
+import Link from 'next/link';
 
 const PRODUCT_LIMIT = 60;
 const PRODUCT_OFFSET = 5;
@@ -10,25 +10,27 @@ export default function Dashboard() {
   const products = useFetch(endPoints.products.getProducts(PRODUCT_LIMIT, PRODUCT_OFFSET));
 
   const categoryNames = products?.map((product) => product.category);
-  const categoryCount = categoryNames?.map((category) => category.name)
+  const categoryCount = categoryNames?.map((category) => category.name);
 
   const countOccurrences = (arr) => {
     return arr.reduce((acc, curr) => {
       acc[curr] = (acc[curr] || 0) + 1;
       return acc;
     }, {});
-  }
+  };
 
   console.log(countOccurrences(categoryCount));
 
   const data = {
-    datasets: [{
-      label: 'Categories',
-      data: countOccurrences(categoryCount),
-      borderWidth: 2,
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#50AF95', '#2A71D0'],
-    }]
-  }
+    datasets: [
+      {
+        label: 'Categories',
+        data: countOccurrences(categoryCount),
+        borderWidth: 2,
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#50AF95', '#2A71D0'],
+      },
+    ],
+  };
 
   return (
     <>
@@ -81,14 +83,14 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                        <Link href="#" className="text-indigo-600 hover:text-indigo-900">
                           Edit
-                        </a>
+                        </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                        <Link href="#" className="text-indigo-600 hover:text-indigo-900">
                           Delete
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   ))}
