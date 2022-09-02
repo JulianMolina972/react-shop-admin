@@ -1,3 +1,4 @@
+import { addProduct } from "@services/api/products";
 import { useRef } from "react";
 
 export default function FormProduct() {
@@ -12,10 +13,13 @@ export default function FormProduct() {
       title: formData.get('title'),
       price: Number(formData.get('price')),
       description: formData.get('description'),
-      category: formData.get('category'),
-      image: [formData.get('images').name],
+      categoryId: formData.get('category'),
+      images: [formData.get('images').name],
     }
     console.log(data);
+    addProduct(data).then(res => {
+      console.log(res);
+    })
   }
 
   return (
